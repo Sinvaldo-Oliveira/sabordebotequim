@@ -1,8 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Build autossuficiente para deploy em VPS (Hostinger) com PM2
-  output: "standalone",
+  // Build autossuficiente (pasta dist/ + PM2), ativado só pelo script
+  // `npm run build:dist`. Em plataformas que compilam do código-fonte
+  // (Nixpacks, Vercel etc.) fica desligado, porque `next start` não é
+  // compatível com output: "standalone".
+  output: process.env.BUILD_STANDALONE === "true" ? "standalone" : undefined,
   images: {
     remotePatterns: [
       {

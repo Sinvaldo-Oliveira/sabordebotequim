@@ -7,8 +7,8 @@ cd "$(dirname "$0")/.."
 echo "==> Limpando builds anteriores..."
 rm -rf dist .next
 
-echo "==> Rodando build de produção (next build)..."
-npm run build
+echo "==> Rodando build de produção (next build, modo standalone)..."
+BUILD_STANDALONE=true npm run build
 
 echo "==> Montando dist/ a partir do output standalone..."
 mkdir -p dist

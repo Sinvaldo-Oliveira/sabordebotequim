@@ -6,9 +6,63 @@ hospedagem compartilhada de arquivos estáticos (`public_html`).
 
 **Requisito:** VPS Hostinger (ou qualquer VPS) com Node.js 20+ instalado.
 
+Há dois caminhos possíveis:
+
+- **A — Painel da Hostinger (Nixpacks), conectado ao GitHub.** Mais simples: cada `git push`
+  publica automaticamente. Veja a seção "Deploy via painel" logo abaixo.
+- **B — Manual, com a pasta `dist/` + PM2.** Use quando não houver painel ou quando quiser
+  controlar o processo na mão. Seções 1 a 6.
+
 ---
 
-## 1. Gerar o pacote de deploy
+## Deploy via painel (Nixpacks) — caminho A
+
+Na criação do aplicativo, informe:
+
+| Campo | Valor |
+| --- | --- |
+| Fonte | GitHub |
+| Repositório | `Sinvaldo-Oliveira/sabordebotequim` |
+| Ramo | `main` |
+| Caminho de Construção | `/` |
+| Método de build | **Nixpacks** |
+| Porta | `3000` |
+
+O Nixpacks executa `npm install`, `npm run build` e `npm start` automaticamente.
+
+> O `output: "standalone"` do `next.config.ts` fica **desligado** nesse caminho — ele só é
+> ativado pela variável `BUILD_STANDALONE=true`, usada apenas pelo `npm run build:dist`.
+> Isso é proposital: `next start` não é compatível com o modo standalone.
+
+### Variáveis de ambiente no painel
+
+Como o `.env` não vai para o Git, cadastre no painel:
+
+**Copiadas da `.env` local, sem alterar:**
+`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`,
+`WHATSAPP_HASH_SALT`, `WHATSAPP_ENCRYPTION_KEY`, `OTP_PEPPER`, `IP_HASH_SALT`,
+`N8N_WEBHOOK_URL`
+
+**Fixas para produção:**
+
+```
+NODE_ENV=production
+WHATSAPP_PROVIDER=n8n
+WHATSAPP_TEMPLATE_LANGUAGE=pt_BR
+OTP_TTL_SECONDS=300
+OTP_RESEND_MIN_SECONDS=60
+OTP_MAX_SENDS_PER_WINDOW=3
+RATE_LIMIT_MAX_ATTEMPTS=5
+RATE_LIMIT_WINDOW_MINUTES=10
+NEXT_PUBLIC_APP_URL=https://SEU-DOMINIO.com.br
+```
+
+**Não cadastre:** `DEMO_PASSWORD` (só para scripts locais), `CPF_*` e `TURNSTILE_*`
+(não são usados pela aplicação).
+
+---
+
+## 1. Gerar o pacote de deploy (caminho B)
 
 Na sua máquina, na raiz do projeto:
 

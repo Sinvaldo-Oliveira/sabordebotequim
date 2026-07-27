@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "description": "Sistema de votação online do Festival Gastronômico e Cultural de Ribeirão das Neves — Sabor de Botequim",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",

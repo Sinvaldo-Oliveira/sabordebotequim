@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+/* =============================================================
+   Tema — Sabor de Botequim
+   Tokens em CSS variables para permitir que o administrador
+   altere a identidade visual em runtime (system_settings).
+   ============================================================= */
+:root {
+  /* Paleta do festival */
+  --brand-primary: #e05206; /* laranja tostado — ação principal */
+  --brand-primary-strong: #b84304; /* hover/pressed da ação principal */
+  --brand-secondary: #7d1d21; /* vermelho vinho — títulos e detalhes */
+  --brand-accent: #f2a81d; /* amarelo mostarda — destaques */
+  --brand-leaf: #2f6b4f; /* verde garrafa — cor complementar */
+  --brand-cream: #faf3e7; /* bege — fundo padrão do site */
+  --brand-surface: #ffffff; /* superfícies elevadas (cards, modais) */
+  --brand-ink: #33231b; /* marrom-café — texto principal */
+  --brand-muted: #7a6a5f; /* texto secundário */
+  --brand-line: #e8dcc9; /* bordas e divisores */
+
+  /* Estados do sistema */
+  --state-success: #2f6b4f;
+  --state-error: #a4161a;
+  --state-warning: #b9750b;
+  --state-info: #1d5c8f;
+}
+
+@theme inline {
+  --color-primary: var(--brand-primary);
+  --color-primary-strong: var(--brand-primary-strong);
+  --color-secondary: var(--brand-secondary);
+  --color-accent: var(--brand-accent);
+  --color-leaf: var(--brand-leaf);
+  --color-cream: var(--brand-cream);
+  --color-surface: var(--brand-surface);
+  --color-ink: var(--brand-ink);
+  --color-muted: var(--brand-muted);
+  --color-line: var(--brand-line);
+
+  --color-success: var(--state-success);
+  --color-error: var(--state-error);
+  --color-warning: var(--state-warning);
+  --color-info: var(--state-info);
+
+  --font-sans: var(--font-archivo), system-ui, sans-serif;
+  --font-display: var(--font-alfa), serif;
+}
+
+@layer base {
+  body {
+    @apply bg-cream text-ink font-sans antialiased;
+  }
+
+  ::selection {
+    background-color: var(--brand-accent);
+    color: var(--brand-ink);
+  }
+
+  /* Foco visível em toda navegação por teclado (acessibilidade) */
+  :focus-visible {
+    outline: 3px solid var(--brand-primary);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* Carrossel (marquee) de logomarcas de patrocinadores */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.sponsor-marquee-track {
+  animation-name: marquee;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.sponsor-marquee:hover .sponsor-marquee-track {
+  animation-play-state: paused;
+}

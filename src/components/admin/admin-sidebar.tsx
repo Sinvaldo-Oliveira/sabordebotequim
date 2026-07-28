@@ -2,7 +2,18 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, UtensilsCrossed, Tags, Vote, Settings, Images, Handshake, UserRound } from "lucide-react";
+import {
+  Home,
+  UtensilsCrossed,
+  Tags,
+  Vote,
+  Settings,
+  Images,
+  Handshake,
+  UserRound,
+  BarChart3,
+  Trophy,
+} from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 
 const NAV_ITEMS = [
@@ -20,6 +31,10 @@ const SETTINGS_ITEMS = [
     icon: Handshake,
   },
   { label: "Idealizador", href: "/admin/configuracoes/idealizador", icon: UserRound },
+];
+
+const REPORT_ITEMS = [
+  { label: "Ranking-Votação", href: "/admin/relatorios/ranking-votacao", icon: Trophy },
 ];
 
 export function AdminSidebar() {
@@ -45,6 +60,26 @@ export function AdminSidebar() {
               href={item.href}
               aria-current={isActive ? "page" : undefined}
               className={itemClass(isActive)}
+            >
+              <Icon aria-hidden="true" className="size-[18px]" />
+              {item.label}
+            </Link>
+          );
+        })}
+
+        <p className="mb-1 mt-4 flex items-center gap-2 px-3.5 text-xs font-semibold uppercase tracking-wide text-muted">
+          <BarChart3 aria-hidden="true" className="size-3.5" />
+          Relatórios
+        </p>
+        {REPORT_ITEMS.map((item) => {
+          const isActive = pathname.startsWith(item.href);
+          const Icon = item.icon;
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              aria-current={isActive ? "page" : undefined}
+              className={cn(itemClass(isActive), "ml-2")}
             >
               <Icon aria-hidden="true" className="size-[18px]" />
               {item.label}

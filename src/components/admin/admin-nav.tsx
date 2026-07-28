@@ -9,6 +9,7 @@ const NAV_ITEMS = [
   { label: "Restaurantes", href: "/admin/restaurantes" },
   { label: "Categorias", href: "/admin/categorias" },
   { label: "Votação", href: "/admin/votacao" },
+  { label: "Ranking-Votação", href: "/admin/relatorios/ranking-votacao" },
   { label: "Slider-Hero", href: "/admin/configuracoes/slider-hero" },
   { label: "Carrossel-Patrocinadores", href: "/admin/configuracoes/carrossel-patrocinadores" },
   { label: "Idealizador", href: "/admin/configuracoes/idealizador" },

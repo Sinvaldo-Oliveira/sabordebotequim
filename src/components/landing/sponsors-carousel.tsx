@@ -33,10 +33,10 @@ export function SponsorsCarousel({
       </p>
       <div
         // Só corta os excedentes na horizontal (efeito de loop infinito).
-        // Na vertical fica sem clipe (overflow-x-clip, não overflow-hidden)
-        // e ganha um respiro (py-12) dimensionado para o zoom máximo (3x)
-        // não cortar a logomarca ao crescer no hover.
-        className="sponsor-marquee mt-6 overflow-x-clip py-12"
+        // Na vertical fica sem clipe (overflow-x-clip, não overflow-hidden),
+        // para a logomarca ampliada nunca ser cortada, e o respiro vertical
+        // evita que ela invada o conteúdo vizinho ao crescer.
+        className="sponsor-marquee mt-6 overflow-x-clip py-16"
         style={{
           maskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
           WebkitMaskImage:
@@ -52,10 +52,13 @@ export function SponsorsCarousel({
               <Image
                 src={sponsor.logoUrl}
                 alt={sponsor.name}
-                width={140}
-                height={56}
+                width={420}
+                height={168}
                 style={{ "--sponsor-zoom": zoomScale } as CSSProperties}
-                className="relative h-10 w-auto scale-100 object-contain opacity-70 grayscale transition-all duration-500 ease-out hover:z-10 hover:scale-[var(--sponsor-zoom)] hover:opacity-100 hover:grayscale-0 sm:h-12"
+                // No celular não existe hover (o Tailwind v4 limita `hover:`
+                // a dispositivos com mouse), então as logos já aparecem
+                // coloridas e o toque dispara o zoom via `active:`.
+                className="relative h-30 w-auto scale-100 object-contain transition-all duration-500 ease-out active:scale-[var(--sponsor-zoom)] max-sm:opacity-100 max-sm:grayscale-0 sm:h-36 sm:opacity-70 sm:grayscale sm:hover:z-10 sm:hover:scale-[var(--sponsor-zoom)] sm:hover:opacity-100 sm:hover:grayscale-0"
               />
             );
             return (

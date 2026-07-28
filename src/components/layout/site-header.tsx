@@ -28,26 +28,39 @@ export function SiteHeader() {
   }, [transparent]);
 
   // Modo claro (texto branco sobre a imagem): só no topo, sem rolagem e
-  // com o menu mobile fechado.
+  // com o menu mobile fechado. Vale apenas no desktop — no celular o
+  // cabeçalho é sempre sólido.
   const light = transparent && !scrolled && !menuOpen;
+
+  // No desktop o cabeçalho pode sobrepor o hero (fixed + transparente).
+  // No celular ele fica sempre sólido e no fluxo da página, para o
+  // carrossel começar abaixo dele em vez de ficar encoberto.
+  const desktopClasses = transparent
+    ? light
+      ? "md:fixed md:border-transparent md:bg-transparent"
+      : "md:fixed md:border-b md:border-line md:bg-cream/95 md:backdrop-blur"
+    : "md:border-b md:border-line md:bg-cream/95 md:backdrop-blur";
 
   return (
     <header
       className={cn(
-        "inset-x-0 top-0 z-50 transition-colors duration-300",
-        transparent ? "fixed" : "sticky border-b border-line bg-cream/95 backdrop-blur",
-        transparent && !light && "border-b border-line bg-cream/95 backdrop-blur",
+        "sticky inset-x-0 top-0 z-50 bg-header transition-colors duration-300",
+        desktopClasses,
       )}
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <Link
           href="/"
           className={cn(
-            "font-display text-lg transition-colors",
-            light ? "text-white drop-shadow" : "text-secondary",
+            "font-display text-lg text-white transition-colors",
+            light ? "md:text-white md:drop-shadow" : "md:text-secondary",
           )}
         >
-          Sabor <span className={light ? "text-white" : "text-primary"}>de</span> Botequim
+          Sabor{" "}
+          <span className={cn("text-white", light ? "md:text-white" : "md:text-primary")}>
+            de
+          </span>{" "}
+          Botequim
         </Link>
 
         <nav aria-label="Navegação principal" className="hidden items-center gap-6 md:flex">
@@ -73,7 +86,7 @@ export function SiteHeader() {
 
         <button
           type="button"
-          className={cn("md:hidden", light ? "text-white" : "text-ink")}
+          className="text-white md:hidden"
           aria-expanded={menuOpen}
           aria-controls="menu-mobile"
           aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
@@ -86,7 +99,7 @@ export function SiteHeader() {
       <div
         id="menu-mobile"
         className={cn(
-          "border-t border-line bg-cream md:hidden",
+          "border-t border-white/15 bg-header md:hidden",
           menuOpen ? "block" : "hidden",
         )}
       >
@@ -96,7 +109,7 @@ export function SiteHeader() {
               key={item.href}
               href={item.href}
               onClick={() => setMenuOpen(false)}
-              className="border-b border-line/60 py-3 text-sm font-semibold text-ink last:border-b-0"
+              className="border-b border-white/15 py-3 text-sm font-semibold text-white last:border-b-0"
             >
               {item.label}
             </Link>

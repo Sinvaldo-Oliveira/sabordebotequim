@@ -10,6 +10,7 @@
   --brand-primary: #e05206; /* laranja tostado — ação principal */
   --brand-primary-strong: #b84304; /* hover/pressed da ação principal */
   --brand-secondary: #7d1d21; /* vermelho vinho — títulos e detalhes */
+  --brand-header: #7c070d; /* vermelho escuro — cabeçalho no celular */
   --brand-accent: #f2a81d; /* amarelo mostarda — destaques */
   --brand-leaf: #2f6b4f; /* verde garrafa — cor complementar */
   --brand-cream: #faf3e7; /* bege — fundo padrão do site */
@@ -29,6 +30,7 @@
   --color-primary: var(--brand-primary);
   --color-primary-strong: var(--brand-primary-strong);
   --color-secondary: var(--brand-secondary);
+  --color-header: var(--brand-header);
   --color-accent: var(--brand-accent);
   --color-leaf: var(--brand-leaf);
   --color-cream: var(--brand-cream);

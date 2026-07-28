@@ -54,11 +54,11 @@ export function HeroCarousel({
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
     >
-      {/* Dimensões alvo do slider: 1200×600 (proporção 2:1). A proporção
-          garante que o object-cover não corte nada de uma imagem enviada
-          nesse formato, e os tetos evitam ampliar além do tamanho original
-          em telas maiores. Abaixo de 1200px a área reduz proporcionalmente. */}
-      <div className="relative mx-auto aspect-[2/1] max-h-[600px] w-full max-w-[1200px]">
+      {/* Referência de 1200×600 (proporção 2:1), mas ocupando a largura
+          total: a imagem cobre a área inteira, sem faixas nas laterais.
+          Até 1200px a altura acompanha a proporção; acima disso ela trava
+          em 600px e o object-cover apara o excedente vertical. */}
+      <div className="relative aspect-[2/1] max-h-[600px] w-full">
         {slides.map((slide, i) => {
           const hasOverlayText = Boolean(slide.title || slide.subtitle || slide.ctaLabel);
           return (
@@ -78,7 +78,7 @@ export function HeroCarousel({
                 alt={slide.title ?? ""}
                 fill
                 priority={i === 0}
-                sizes="(min-width: 1200px) 1200px, 100vw"
+                sizes="100vw"
                 className="object-cover"
               />
 

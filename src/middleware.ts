@@ -46,6 +46,18 @@ export async function middleware(request: NextRequest) {
   const isPanelArea =
     pathname.startsWith("/painel-restaurante") && !isPanelLogin;
 
+  // Copia os cookies eventualmente renovados por getUser() (setAll acima)
+  // para a resposta de redirecionamento. Sem isso, um token de acesso
+  // expirado é renovado mas o cookie novo nunca chega ao navegador — na
+  // próxima requisição o middleware tenta renovar de novo com o mesmo
+  // refresh token (de uso único), falha, e gera loop entre a página de
+  // login e a área protegida (ERR_TOO_MANY_REDIRECTS).
+  function redirectWithRefreshedCookies(url: URL) {
+    const redirectResponse = NextResponse.redirect(url);
+    response.cookies.getAll().forEach((cookie) => redirectResponse.cookies.set(cookie));
+    return redirectResponse;
+  }
+
   if (!user && (isAdminArea || isPanelArea)) {
     const redirectUrl = request.nextUrl.clone();
     redirectUrl.pathname = isAdminArea
@@ -53,14 +65,14 @@ export async function middleware(request: NextRequest) {
       : "/painel-restaurante/login";
     redirectUrl.search = "";
     redirectUrl.searchParams.set("redirecionar", pathname);
-    return NextResponse.redirect(redirectUrl);
+    return redirectWithRefreshedCookies(redirectUrl);
   }
 
   if (user && (isAdminLogin || isPanelLogin)) {
     const redirectUrl = request.nextUrl.clone();
     redirectUrl.pathname = isAdminLogin ? "/admin" : "/painel-restaurante";
     redirectUrl.search = "";
-    return NextResponse.redirect(redirectUrl);
+    return redirectWithRefreshedCookies(redirectUrl);
   }
 
   return response;
